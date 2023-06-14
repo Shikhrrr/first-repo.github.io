@@ -1,0 +1,30 @@
+body{
+    background-color: rgba(31, 30, 30, 0.801);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large; 
+}
+
+#main-body{
+    border-radius: 20px;
+    display: grid;
+    grid-column-gap: 10%;
+    grid-row-gap: 10%;
+    grid-template-columns: 200px 200px auto;
+    background-color: rgba(56, 55, 55, 0.801);
+}
+
+.element{
+    border-radius: 20px;
+    background-color: rgba(31, 30, 30, 0.801);
+    padding: 50px;
+    margin: 10%;
+    text-align: center;
+    
+    margin: 50px;
+}
+
+.element:hover{
+    background-color: black;
+    font-weight: bold;
+}
