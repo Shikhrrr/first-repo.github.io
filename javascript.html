@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script>
+       //increment and display a new value on clicking  
+        let counter = 0;
+        
+        function count() {
+            counter = counter+1;
+            alert(counter);
+        }
+        //change heading
+        function heading() {
+            document.querySelector('h1').innerHTML = "CHANGED HEADING!";
+        }
+
+        //change heading and revert using same button
+        function newHead() {
+            if (document.querySelector('h1').innerHTML === "Hello!") {
+                document.querySelector('h1').innerHTML = "CHANGED HEADING!";
+                
+            } else{
+                document.querySelector('h1').innerHTML = "Hello!";
+            }
+        }
+
+        //using variables to shorten the above task
+
+        function newHead_1() {
+            const heading = document.querySelector('h1');
+            if (heading.innerHTML === "Hello!"){
+                heading.innerHTML = "Changed Heading!";
+            }
+
+            else{
+                heading.innerHTML = "Hello!";
+            }
+        }
+
+        //incrementing value but in heading, displaying an alert on satisfying a condition
+        let head2 = 0; 
+        function counting() {
+            head2 = head2 + 1;
+            document.querySelector('h2').innerHTML = head2;
+            if (head2 % 10 === 0) {
+                alert(`the counter is now ${head2}`);
+            }
+        }
+
+        /* to do the same thing, but without calling the function inside the button tag 
+        
+        REFER TO "DOM.html" for complete procedure
+
+        let head2 = 0;
+
+        function counting() {
+            head2 += 1;
+            document.querySelector('h2').innerHTML = head2;
+        }
+
+        document.querySelector('button').onclick = counting;
+        */
+
+        
+        // to display an alert with name of the user when the form is submitted
+
+        document.addEventListener("DOMContentLoaded", function(){
+            document.querySelector('form').onsubmit = function(){
+            const name = document.querySelector('#name');
+            alert (`Hello, ${name}!`);
+            }
+        });
+
+        // to change the color of the text
+
+        document.addEventListener("DOMContentLoaded", function(){
+            document.querySelector('#red').onclick = function(){
+                document.querySelector('#hello').style.color = 'red';
+                document.querySelector('#hello').innerHTML = 'Red';
+            }
+
+            
+            document.querySelector('#blue').onclick = function(){
+                document.querySelector('#hello').style.color = 'blue';
+                document.querySelector('#hello').innerHTML = 'Blue';
+            }
+            
+                document.querySelector('#green').onclick = function(){
+                document.querySelector('#hello').style.color = 'green';
+                document.querySelector('#hello').innerHTML = 'Green';
+            }
+        });
+
+        //short way to do the same thing
+
+        document.querySelectorAll('.color-button').forEach(function(button) {
+            button.onclick = function() {
+                document.querySelector('#hello').style.color = button.dataset.color;
+            }
+        });
+
+        /* Shortcut to define a function -
+        function(button){bla bla bla} can be written as (button) => {bla bla bla}
+
+        function(){} can be written as () => {}
+        
+        */
+
+        // changing color from drop down menu
+
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelector('select').onchange = function(){
+                document.querySelector('#hello').style.color = this.value;
+            }
+        });
+
+        //create a task list that can add elements
+        document.addEventListener("DOMContentLoaded", function(){
+			document.querySelector('#submit1').disabled = true;
+
+			document.querySelector('#input').onkeyup = function(){
+				if (document.querySelector('#input').value.length > 0) {
+					document.querySelector('#submit1').disabled = false;
+				} else{
+					document.querySelector('#submit1').disabled = true;
+				}
+			}
+
+			document.querySelector('#form2').onsubmit = () => {
+				const task = document.querySelector('#input').value;
+				
+				const li = document.createElement('li');
+				li.innerHTML = task;
+
+				document.querySelector('#list').append(li);
+				document.querySelector('#input').value = '';
+
+				document.querySelector('#submit1').disabled = true;
+
+				return false;
+
+			}
+		});
+
+        //automatic counter
+        let time = 0;
+        function newcount(){
+            time = time + 1;
+            document.querySelector('#timer').innerHTML = time;
+        }
+        setInterval(newcount, 1000);
+
+        //to create a counter that can save values, shows the last saved value when opened, has a reset button.  Note- to say when something does not happen, we use '!'
+        
+		if (!localStorage.getItem('counter')) {
+			localStorage.setItem('counter', 0);
+		}
+		function count2(){
+			let counter = localStorage.getItem('counter');
+			counter++;
+			document.querySelector('#counter2').innerHTML = counter;
+			localStorage.setItem('counter', counter);
+		}
+
+		document.addEventListener("DOMContentLoaded", function(){
+			document.querySelector('#counter2').innerHTML = localStorage.getItem('counter');
+
+			document.querySelector('#reset').onclick = function reset(){
+				localStorage.setItem('counter', 0);
+				document.querySelector('#counter2').innerHTML = localStorage.getItem('counter');
+			}
+		});
+
+        //Working with APIs (i cant understand seriously)
+        
+        document.addEventListener("DOMContentLoaded", function(){
+            
+            document.querySelector('#form3').onsubmit = function(){
+                fetch('https://api.exchangeratesapi.io/latest?base=USD')
+                .then(response => response.json())
+                .then(data => {
+                    const currency = document.querySelector('#currency').value.toUpperCase();
+                    const rate = data.rates[currency];
+                    if(rate !== undefined){
+                        
+                        document.querySelector('#div').innerHTML = `1 USD is equal to ${rate.toFixed(3)}`       //toFixed sets the number of decimal places
+                    } else{
+                        document.querySelector('#div').innerHTML = 'invalid currency';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+                return false;
+            }
+
+        });
+    </script>
+
+</head>
+<body>
+    <h1>Hello!</h1>
+    <button onclick="count()">Count</button>
+    <button onclick="heading()">Click to change heading</button> 
+    <button onclick="newHead_1()">click to change and revert back</button>
+    <br>
+    <button onclick="counting()">click for alert plus count</button>
+    <h2>0</h2>
+
+    <form>
+        <input id = "name" type="text" placeholder="Name">
+        <input id = "submit" type = "submit">
+    </form>
+
+    <h2 id="hello">Click to change color</h2><br>
+    <button id="red" class="color_button" data-color="red">red</button>
+    <button id="blue" class="color_button" data-color="blue">blue</button>
+    <button id="green" class="color_button" data-color="green">green</button>
+    
+    <select>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+    </select>
+
+    <h1>Tasks</h1>
+    <ul id="list">
+
+    </ul>
+
+    <form id="form2">
+        <input type="text" placeholder="add task" id="input">
+        <input id = "submit1" type="submit">
+    </form>
+
+    <h1 id="timer">0</h1>
+    <button id="timerbutton" onclick="newcount()">Click to start</button>
+
+    <h1 id="counter2">0</h1>
+    <button id="count2" onclick="count2()">Count</button>
+	<button id="reset" onclick="reset()">Reset</button>
+
+    <form id="form3">
+        <input id="currency" type="text" placeholder="Currency">
+        <input id="submit3" type="submit">
+    </form>
+    <div id="div"></div>
+</body>
+</html>
